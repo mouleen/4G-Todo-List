@@ -9,3 +9,13 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.wrapper{
+    width: 400px;margin-left: 40%;
+}
+li {
+    list-style: none;
+}
+small{
+    text-align: right;
+    left:0px
+}
