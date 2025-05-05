@@ -9,3 +9,66 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+
+body, h1, h2, h3, h4, h5, h6  {
+   /* font-family: Helvetica, Arial, sans-serif;*/
+    color: #e8dbdb;
+  }
+  body{
+    background-color: #fff;
+  }
+
+.card-box{
+ /*   width: 400px;margin-left: 40%;*/
+    background-color: #f4f3f3;
+    margin: 3%;
+}
+
+
+.card-box-space {
+    margin-left: 40%;
+    width: 400px;
+    background-color: #f4f3f3;
+    padding: 5px;
+}
+
+ul{
+    padding-left: 0px;   
+}
+li {
+    background-color: #f4f3f3;
+    list-style: none;
+    color: darkslategray;
+
+}
+small{
+    text-align: right;
+    left:0px
+}
+
+span{
+ opacity: 0.5;
+}
+input.d-flex {
+    background-color: #f4f3f3;
+    color: darkslategray;
+    border: none;
+    }
+
+input:focus {
+        outline: none;
+        border: none;
+    }
+
+.stack{
+    content: "";
+    height: 2px;
+    width: 98%;
+    margin-left: 1%;
+}
+.stack-2{
+    content: "";
+    height: 2px;
+    width: 96%;
+    margin-left: 2%;
+}
