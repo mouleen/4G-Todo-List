@@ -48,8 +48,6 @@ const Home = () => {
 							onMouseLeave={()=>(setFlagDelete(null))}
 							><span className="py-2">{item}</span>
 								{ flagDelete === idx && <small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(idx))}> x </small>}
-								{/*<small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(idx))}> x </small>*/}
-
 							</li>
 						))
 					}

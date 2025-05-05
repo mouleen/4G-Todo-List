@@ -43,8 +43,10 @@ li {
 }
 small{
     text-align: right;
-    left:0px
+    left:0px;
+    cursor: pointer;
 }
+
 
 span{
  opacity: 0.5;
