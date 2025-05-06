@@ -1,7 +1,13 @@
+// url para solicitar las tareas por hacer
+// hacer una peticion a la API al cargar el componente con useEffect
+// Mostrar en la UI el listado de tareas
+
 import React,{useEffect, useState} from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
+
+
 
 //create your first component
 const Home = () => {
@@ -20,6 +26,14 @@ const Home = () => {
 		console.log("Eliminar elemento");
 	}
 	//console.log(newTodo);
+
+	useEffect(()=>{
+		fetch("https://playground.4geeks.com/todo/users/jg_list")
+		.then((response)=> response.json())
+		.then((data)=> setTodoList(data.todos))
+	},[])
+
+	
 	return (
 		<div className="card-box-space">
 			
@@ -46,7 +60,7 @@ const Home = () => {
 							className="d-flex justify-between py-2 px-5 w-100 border-bottom border-1 position-relative bg-light" 
 							onMouseOver={()=>(setFlagDelete(idx))}
 							onMouseLeave={()=>(setFlagDelete(null))}
-							><span className="py-2">{item}</span>
+							><span className="py-2">{item.label}</span>
 								{ flagDelete === idx && <small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(idx))}> x </small>}
 								{/*<small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(idx))}> x </small>*/}
 
