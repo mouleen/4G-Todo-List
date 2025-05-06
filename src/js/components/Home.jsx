@@ -54,6 +54,30 @@ const Home = () => {
 	}
 	//console.log(newTodo);
 
+	const panic=()=>{
+		fetch("https://playground.4geeks.com/todo/users/jg_list",{
+			method:"DELETE"
+		})
+		.then((response)=>{
+			if(response.ok){
+				console.log("Eliminacion correcta")
+				fetch("https://playground.4geeks.com/todo/users/jg_list",{
+					method:"POST",
+					headers:{
+						"Content-Type":"application/json"
+					}
+				})
+			}
+		}).then(()=>{
+			fetch("https://playground.4geeks.com/todo/users/jg_list")
+				.then((response)=> response.json())
+				.then((data)=> {
+					setNewTodo("")
+					setTodoList(data.todos)
+					}
+				)
+		})
+	}
 	useEffect(()=>{
 		fetch("https://playground.4geeks.com/todo/users/jg_list")
 		.then((response)=> response.json())
@@ -100,6 +124,7 @@ const Home = () => {
 				</ul>
 				</div>
 			</div>
+			<button className="button button-danger" onClick={()=>panic()}>PANIC</button>
 		</div>
 	);
 };
