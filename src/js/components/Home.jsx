@@ -16,14 +16,41 @@ const Home = () => {
 	const [flagDelete,setFlagDelete] = useState(null);
 	const handleKeyPress = (e)=> {
 		if (e.key === "Enter"){
-			setTodoList([...todoList,newTodo]);
+			fetch("https://playground.4geeks.com/todo/todos/jg_list",{
+				method:"POST",
+				body: JSON.stringify({
+					"label":newTodo,
+						"is_done":false
+					}),
+				headers:{
+					"Content-Type":"application/json"
+				}
+			})
+			.then((response)=> response.json())
+			.then((data)=> console.log(data))
+
 			setNewTodo("");
+			fetch("https://playground.4geeks.com/todo/users/jg_list")
+			.then((response)=> response.json())
+			.then((data)=> setTodoList(data.todos))
+			setTodoList([...todoList,newTodo]);
 		}
 		console.log([...todoList,newTodo]);
 	}
 	const handleDelete = (taskId)=> {
-		setTodoList(todoList.filter((item,idx)=> idx !== taskId ));
-		console.log("Eliminar elemento");
+		//setTodoList(todoList.filter((item,idx)=> idx !== taskId ));
+		fetch("https://playground.4geeks.com/todo/todos/"+taskId,{
+			method : "DELETE"
+		})
+		.then((response) => {
+			if(response.ok){
+				console.log("Tarea Eliminada")
+				fetch("https://playground.4geeks.com/todo/users/jg_list")
+				.then((response)=> response.json())
+				.then((data)=> setTodoList(data.todos))
+			}
+		})
+		//console.log("Eliminar elemento");
 	}
 	//console.log(newTodo);
 
@@ -55,13 +82,13 @@ const Home = () => {
 					</li>
 					
 					{
-						todoList.map((item,idx)=>(
-							<li key={idx}
+						todoList.map((item)=>(
+							<li key={item.id}
 							className="d-flex justify-between py-2 px-5 w-100 border-bottom border-1 position-relative bg-light" 
-							onMouseOver={()=>(setFlagDelete(idx))}
+							onMouseOver={()=>(setFlagDelete(item.id))}
 							onMouseLeave={()=>(setFlagDelete(null))}
 							><span className="py-2">{item.label}</span>
-								{ flagDelete === idx && <small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(idx))}> x </small>}
+								{ flagDelete === item.id && <small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(item.id))}> x </small>}
 								{/*<small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(idx))}> x </small>*/}
 
 							</li>
