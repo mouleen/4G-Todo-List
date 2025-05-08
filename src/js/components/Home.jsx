@@ -27,13 +27,13 @@ const Home = () => {
 				}
 			})
 			.then((response)=> response.json())
-			.then((data)=> console.log(data))
+			//.then((data)=> console.log(data))
 
 			setNewTodo("");
 			fetch("https://playground.4geeks.com/todo/users/jg_list")
 			.then((response)=> response.json())
 			.then((data)=> setTodoList(data.todos))
-			setTodoList([...todoList,newTodo]);
+			//setTodoList([...todoList,newTodo]);
 		}
 		console.log([...todoList,newTodo]);
 	}
@@ -54,27 +54,24 @@ const Home = () => {
 	}
 	//console.log(newTodo);
 
-	const panic=()=>{
+const panic= async ()=>{
 		fetch("https://playground.4geeks.com/todo/users/jg_list",{
 			method:"DELETE"
 		})
-		.then((response)=>{
+		.then( async (response)=>{
 			if(response.ok){
 				console.log("Eliminacion correcta")
-				fetch("https://playground.4geeks.com/todo/users/jg_list",{
+				await fetch("https://playground.4geeks.com/todo/users/jg_list",{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
 					}
 				})
 			}
-		}).then(()=>{
-			fetch("https://playground.4geeks.com/todo/users/jg_list")
+		}).then(async ()=>{
+			 await fetch("https://playground.4geeks.com/todo/users/jg_list")
 				.then((response)=> response.json())
-				.then((data)=> {
-					setNewTodo("")
-					setTodoList(data.todos)
-					}
+				.then((data)=> setTodoList(data.todos)
 				)
 		})
 	}
