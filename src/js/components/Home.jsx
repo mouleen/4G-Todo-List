@@ -7,7 +7,13 @@ import React,{useEffect, useState} from "react";
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
 
-
+// Metodo de validacion basico devuelve true si no esta vacio
+const validate = (stringToValidate) => {
+	if (stringToValidate.trim().length === 0) {
+  		return false;
+	}
+	return true;
+}
 
 //create your first component
 const Home = () => {
@@ -15,8 +21,8 @@ const Home = () => {
 	const [newTodo,setNewTodo] = useState("");
 	const [flagDelete,setFlagDelete] = useState(null);
 	const handleKeyPress = (e)=> {
-		if (e.key === "Enter"){
-			fetch("https://playground.4geeks.com/todo/todos/jg_list",{
+		if (e.key === "Enter" && validate(e.target.value)){
+			fetch("https://playground.4geeks.com/todo/todos/mouleen",{
 				method:"POST",
 				body: JSON.stringify({
 					"label":newTodo,
@@ -30,10 +36,10 @@ const Home = () => {
 			//.then((data)=> console.log(data))
 
 			setNewTodo("");
-			fetch("https://playground.4geeks.com/todo/users/jg_list")
+			fetch("https://playground.4geeks.com/todo/users/mouleen")
 			.then((response)=> response.json())
 			.then((data)=> setTodoList(data.todos))
-			//setTodoList([...todoList,newTodo]);
+			setTodoList([...todoList,newTodo]);
 		}
 		console.log([...todoList,newTodo]);
 	}
@@ -45,7 +51,7 @@ const Home = () => {
 		.then((response) => {
 			if(response.ok){
 				console.log("Tarea Eliminada")
-				fetch("https://playground.4geeks.com/todo/users/jg_list")
+				fetch("https://playground.4geeks.com/todo/users/mouleen")
 				.then((response)=> response.json())
 				.then((data)=> setTodoList(data.todos))
 			}
@@ -55,13 +61,13 @@ const Home = () => {
 	//console.log(newTodo);
 
 const panic= async ()=>{
-		fetch("https://playground.4geeks.com/todo/users/jg_list",{
+		fetch("https://playground.4geeks.com/todo/users/mouleen",{
 			method:"DELETE"
 		})
 		.then( async (response)=>{
 			if(response.ok){
 				console.log("Eliminacion correcta")
-				await fetch("https://playground.4geeks.com/todo/users/jg_list",{
+				await fetch("https://playground.4geeks.com/todo/users/mouleen",{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
@@ -69,14 +75,22 @@ const panic= async ()=>{
 				})
 			}
 		}).then(async ()=>{
-			 await fetch("https://playground.4geeks.com/todo/users/jg_list")
+			 await fetch("https://playground.4geeks.com/todo/users/mouleen")
 				.then((response)=> response.json())
 				.then((data)=> setTodoList(data.todos)
 				)
 		})
 	}
 	useEffect(()=>{
-		fetch("https://playground.4geeks.com/todo/users/jg_list")
+		//CREO USUARIO (por el tipo de api no me importa la respuesta)
+		fetch("https://playground.4geeks.com/todo/users/mouleen",{
+			method:"POST",
+			headers:{
+				"Content-Type":"application/json"
+			}
+		})
+		// LEO LOS TODOS DEL USUARIO
+		fetch("https://playground.4geeks.com/todo/users/mouleen")
 		.then((response)=> response.json())
 		.then((data)=> setTodoList(data.todos))
 	},[])
