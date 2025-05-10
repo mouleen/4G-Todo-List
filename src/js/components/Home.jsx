@@ -20,9 +20,11 @@ const Home = () => {
 	const [todoList,setTodoList] = useState(["ARR Tralalear 1 poco","ARR Tralalear algo"]);
 	const [newTodo,setNewTodo] = useState("");
 	const [flagDelete,setFlagDelete] = useState(null);
+	const [userName,setUserName] = useState("mouleen")
 	const handleKeyPress = (e)=> {
 		if (e.key === "Enter" && validate(e.target.value)){
-			fetch("https://playground.4geeks.com/todo/todos/mouleen",{
+			setTodoList([...todoList,newTodo]);
+			fetch("https://playground.4geeks.com/todo/todos/" + userName,{
 				method:"POST",
 				body: JSON.stringify({
 					"label":newTodo,
@@ -36,10 +38,9 @@ const Home = () => {
 			//.then((data)=> console.log(data))
 
 			setNewTodo("");
-			fetch("https://playground.4geeks.com/todo/users/mouleen")
+			fetch("https://playground.4geeks.com/todo/users/" + userName)
 			.then((response)=> response.json())
 			.then((data)=> setTodoList(data.todos))
-			setTodoList([...todoList,newTodo]);
 		}
 		console.log([...todoList,newTodo]);
 	}
@@ -51,7 +52,7 @@ const Home = () => {
 		.then((response) => {
 			if(response.ok){
 				console.log("Tarea Eliminada")
-				fetch("https://playground.4geeks.com/todo/users/mouleen")
+				fetch("https://playground.4geeks.com/todo/users/" + userName)
 				.then((response)=> response.json())
 				.then((data)=> setTodoList(data.todos))
 			}
@@ -61,13 +62,13 @@ const Home = () => {
 	//console.log(newTodo);
 
 const panic= async ()=>{
-		fetch("https://playground.4geeks.com/todo/users/mouleen",{
+		fetch("https://playground.4geeks.com/todo/users/" + userName,{
 			method:"DELETE"
 		})
 		.then( async (response)=>{
 			if(response.ok){
 				console.log("Eliminacion correcta")
-				await fetch("https://playground.4geeks.com/todo/users/mouleen",{
+				await fetch("https://playground.4geeks.com/todo/users/" + userName,{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
@@ -75,7 +76,7 @@ const panic= async ()=>{
 				})
 			}
 		}).then(async ()=>{
-			 await fetch("https://playground.4geeks.com/todo/users/mouleen")
+			 await fetch("https://playground.4geeks.com/todo/users/" + userName)
 				.then((response)=> response.json())
 				.then((data)=> setTodoList(data.todos)
 				)
@@ -83,14 +84,14 @@ const panic= async ()=>{
 	}
 	useEffect(()=>{
 		//CREO USUARIO (por el tipo de api no me importa la respuesta)
-		fetch("https://playground.4geeks.com/todo/users/mouleen",{
+		fetch("https://playground.4geeks.com/todo/users/" + userName,{
 			method:"POST",
 			headers:{
 				"Content-Type":"application/json"
 			}
 		})
 		// LEO LOS TODOS DEL USUARIO
-		fetch("https://playground.4geeks.com/todo/users/mouleen")
+		fetch("https://playground.4geeks.com/todo/users/" + userName)
 		.then((response)=> response.json())
 		.then((data)=> setTodoList(data.todos))
 	},[])
@@ -98,7 +99,7 @@ const panic= async ()=>{
 	
 	return (
 		<div className="card-box-space">
-			
+			<div className="text-center" style={{ textTransform: 'capitalize', color: 'grey' }}> en hora buena {userName}<hr /></div>
 			<div className="text-center card-box">
 					
 				<h2 className="text-center mt-5 display-5 fw-lighter"><i className="fa-solid fa-list"></i> todos</h2>
