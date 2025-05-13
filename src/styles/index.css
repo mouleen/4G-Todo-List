@@ -73,5 +73,7 @@ input:focus {
     margin-left: 2%;
 }
 small:hover{
-    
+    font-size: larger;
+    color:coral;
+  cursor: pointer;
 }

@@ -4,8 +4,6 @@
 
 import React,{useEffect, useState} from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
 
 // Metodo de validacion basico devuelve true si no esta vacio
 const validate = (stringToValidate) => {
@@ -21,10 +19,10 @@ const Home = () => {
 	const [newTodo,setNewTodo] = useState("");
 	const [flagDelete,setFlagDelete] = useState(null);
 	const [userName,setUserName] = useState("mouleen")
-	const handleKeyPress = (e)=> {
+	const handleKeyPress = async (e)=> {
 		if (e.key === "Enter" && validate(e.target.value)){
 			setTodoList([...todoList,newTodo]);
-			fetch("https://playground.4geeks.com/todo/todos/" + userName,{
+			await fetch("https://playground.4geeks.com/todo/todos/" + userName,{
 				method:"POST",
 				body: JSON.stringify({
 					"label":newTodo,
@@ -38,14 +36,12 @@ const Home = () => {
 			//.then((data)=> console.log(data))
 
 			setNewTodo("");
-			fetch("https://playground.4geeks.com/todo/users/" + userName)
+			await fetch("https://playground.4geeks.com/todo/users/" + userName)
 			.then((response)=> response.json())
 			.then((data)=> setTodoList(data.todos))
 		}
-		console.log([...todoList,newTodo]);
 	}
 	const handleDelete = (taskId)=> {
-		//setTodoList(todoList.filter((item,idx)=> idx !== taskId ));
 		fetch("https://playground.4geeks.com/todo/todos/"+taskId,{
 			method : "DELETE"
 		})
@@ -57,12 +53,10 @@ const Home = () => {
 				.then((data)=> setTodoList(data.todos))
 			}
 		})
-		//console.log("Eliminar elemento");
 	}
-	//console.log(newTodo);
 
 const panic= async ()=>{
-		fetch("https://playground.4geeks.com/todo/users/" + userName,{
+		await fetch("https://playground.4geeks.com/todo/users/" + userName,{
 			method:"DELETE"
 		})
 		.then( async (response)=>{
@@ -101,8 +95,7 @@ const panic= async ()=>{
 		<div className="card-box-space">
 			<div className="text-center" style={{ textTransform: 'capitalize', color: 'grey' }}> en hora buena {userName}<hr /></div>
 			<div className="text-center card-box">
-					
-				<h2 className="text-center mt-5 display-5 fw-lighter"><i className="fa-solid fa-list"></i> todos</h2>
+				<h2 className="text-center mt-2 display-5 fw-lighter"><i className="fa-solid fa-list"></i> todos</h2>
 				<p className="display-1">
 				</p>
 				<div className="wrapper" id="container">
@@ -116,7 +109,6 @@ const panic= async ()=>{
 					onKeyDown ={(e)=>(handleKeyPress(e))}
 					/>
 					</li>
-					
 					{
 						todoList.map((item)=>(
 							<li key={item.id}
@@ -124,9 +116,7 @@ const panic= async ()=>{
 							onMouseOver={()=>(setFlagDelete(item.id))}
 							onMouseLeave={()=>(setFlagDelete(null))}
 							><span className="py-2">{item.label}</span>
-								{ flagDelete === item.id && <small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(item.id))}> x </small>}
-								{/*<small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y" onClick={()=>(handleDelete(idx))}> x </small>*/}
-
+								{ flagDelete === item.id && <small className="mx-3 text-end position-absolute top-50 end-0 translate-middle-y"  onClick={()=>(handleDelete(item.id))}> x </small>}
 							</li>
 						))
 					}
@@ -136,7 +126,7 @@ const panic= async ()=>{
 				</ul>
 				</div>
 			</div>
-			<button className="button button-danger" onClick={()=>panic()}>PANIC</button>
+			<button className="btn btn-secondary btn-block w-100" onClick={()=>panic()}>Eliminar Todas las tareas</button>
 		</div>
 	);
 };
